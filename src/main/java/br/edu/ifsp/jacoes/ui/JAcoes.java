@@ -5,15 +5,20 @@
  */
 package br.edu.ifsp.jacoes.ui;
 
+import java.awt.Component;
+import java.beans.PropertyVetoException;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.jfree.chart.ChartPanel;
+
 /**
  *
  * @author bruno
  */
 public class JAcoes extends javax.swing.JFrame {
-
-    /**
-     * Creates new form JAcoes
-     */
+    
     public JAcoes() {
         initComponents();
         this.setSize(800, 600);
@@ -42,13 +47,14 @@ public class JAcoes extends javax.swing.JFrame {
         jmiCalcularMMA = new javax.swing.JMenuItem();
         jmiPeriodo = new javax.swing.JMenuItem();
         jmConfig = new javax.swing.JMenu();
+        jmiAbrirConfig = new javax.swing.JMenuItem();
         jmAjuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -61,7 +67,7 @@ public class JAcoes extends javax.swing.JFrame {
             .addGap(0, 586, Short.MAX_VALUE)
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -91,7 +97,7 @@ public class JAcoes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -150,6 +156,15 @@ public class JAcoes extends javax.swing.JFrame {
         jMenuBar1.add(jmFerramentas);
 
         jmConfig.setText("Config.");
+
+        jmiAbrirConfig.setText("Abrir");
+        jmiAbrirConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAbrirConfigActionPerformed(evt);
+            }
+        });
+        jmConfig.add(jmiAbrirConfig);
+
         jMenuBar1.add(jmConfig);
 
         jmAjuda.setText("Ajuda");
@@ -173,7 +188,15 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jmiBaseAtivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiBaseAtivosActionPerformed
         // TODO add your handling code here:
-        
+        jBaseAtivos = new BaseAtivos();
+        jPanel3.add(jBaseAtivos);
+        jBaseAtivos.setVisible(true);
+        jBaseAtivos.setDiretorio(jConfiguracoes.getDiretorio());
+        try {
+            jBaseAtivos.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            System.err.println("Não foi possível maximizar o painel de ativos!");
+        }
     }//GEN-LAST:event_jmiBaseAtivosActionPerformed
 
     private void jmiSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSobreActionPerformed
@@ -182,6 +205,19 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jmiPlotarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiPlotarGraficoActionPerformed
         // TODO add your handling code here:
+        for (Component cp : jPanel2.getComponents() ){
+            jPanel2.remove(cp);
+        }
+        
+        try{
+            Grafico g = new Grafico();
+            ChartPanel chart = g.plotarGrafico(jBaseAtivos.getSelectedItem(), jConfiguracoes.getDiretorio()+"/"+jBaseAtivos.getSelectedItem()+".csv");
+            jPanel2.setLayout(new java.awt.BorderLayout());
+            jPanel2.add(chart);
+            jPanel2.validate();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(JAcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jmiPlotarGraficoActionPerformed
 
     private void jmSelecionarArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmSelecionarArquivoActionPerformed
@@ -191,6 +227,12 @@ public class JAcoes extends javax.swing.JFrame {
     private void jmSelecionarArquivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jmSelecionarArquivoMouseClicked
         
     }//GEN-LAST:event_jmSelecionarArquivoMouseClicked
+
+    private void jmiAbrirConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbrirConfigActionPerformed
+        // TODO add your handling code here:
+        jConfiguracoes = new Configuracoes();
+        jConfiguracoes.setVisible(true);
+    }//GEN-LAST:event_jmiAbrirConfigActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,6 +268,9 @@ public class JAcoes extends javax.swing.JFrame {
             }
         });
     }
+    
+    BaseAtivos jBaseAtivos;
+    Configuracoes jConfiguracoes;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar1;
@@ -237,6 +282,7 @@ public class JAcoes extends javax.swing.JFrame {
     private javax.swing.JMenu jmFerramentas;
     private javax.swing.JMenu jmInicio;
     private javax.swing.JMenuItem jmSelecionarArquivo;
+    private javax.swing.JMenuItem jmiAbrirConfig;
     private javax.swing.JMenuItem jmiBaseAtivos;
     private javax.swing.JMenuItem jmiCalcularMMA;
     private javax.swing.JMenuItem jmiPeriodo;

@@ -5,17 +5,18 @@
  */
 package br.edu.ifsp.jacoes.ui;
 
-/**
- *
- * @author bruno
- */
-public class BaseAtivos extends javax.swing.JPanel {
+import java.io.File;
+import javax.swing.DefaultListModel;
+
+public class BaseAtivos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form BaseAtivos
      */
     public BaseAtivos() {
         initComponents();
+        dlmAtivos = new DefaultListModel();
+        jlBaseAtivos.setModel(dlmAtivos);
     }
 
     /**
@@ -27,52 +28,76 @@ public class BaseAtivos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlBaseAtivos = new javax.swing.JList<>();
 
-        jLabel1.setText("TESTTE");
+        setPreferredSize(new java.awt.Dimension(143, 500));
 
-        jLabel2.setText("TESTTE");
+        jlBaseAtivos.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jlBaseAtivos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlBaseAtivosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jlBaseAtivos);
 
-        jLabel3.setText("TESTTE");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addGap(21, 21, 21))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(28, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addGap(20, 20, 20)))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(79, 79, 79)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addContainerGap(257, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(47, 47, 47)
-                    .addComponent(jLabel2)
-                    .addContainerGap(328, Short.MAX_VALUE)))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    private void jlBaseAtivosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlBaseAtivosMouseClicked
+        // TODO add your handling code here:
+        itemSelecionado = jlBaseAtivos.getSelectedValue();
+    }//GEN-LAST:event_jlBaseAtivosMouseClicked
+    
+    public String getSelectedItem(){
+        return itemSelecionado;
+    }
+    
+    public void setDiretorio(String diretorio) {
+        this.diretorio = diretorio;
+        dlmAtivos.clear();
+        carregarAtivos();
+    }
+    
+    private String getTicker(String nome){
+        String ticker = nome.substring(0, nome.lastIndexOf("."));
+        return ticker;
+    }
+    
+    private void carregarAtivos() {
+        File dir = new File(this.diretorio);
+        File [] arquivos = dir.listFiles();
+        String nomeArquivo;
+        
+        for (File arquivo : arquivos) {
+            nomeArquivo = arquivo.getName();
+            if(nomeArquivo.substring(nomeArquivo.lastIndexOf(".") + 1, nomeArquivo.length()).equals("csv")){
+                dlmAtivos.addElement(getTicker(arquivo.getName()));
+            }
+        }
+    }
+    
+    private DefaultListModel dlmAtivos;
+    private String diretorio;
+    private String itemSelecionado;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> jlBaseAtivos;
     // End of variables declaration//GEN-END:variables
 }
