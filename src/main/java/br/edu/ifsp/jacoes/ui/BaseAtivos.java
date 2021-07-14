@@ -7,6 +7,7 @@ package br.edu.ifsp.jacoes.ui;
 
 import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 
 public class BaseAtivos extends javax.swing.JInternalFrame {
 

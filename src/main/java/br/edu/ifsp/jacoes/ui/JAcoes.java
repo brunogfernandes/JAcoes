@@ -5,12 +5,19 @@
  */
 package br.edu.ifsp.jacoes.ui;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.beans.PropertyVetoException;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import org.jfree.chart.ChartPanel;
 
 /**
@@ -23,7 +30,20 @@ public class JAcoes extends javax.swing.JFrame {
         initComponents();
         this.setSize(800, 600);
     }
-
+    
+    public void adicionaMarcaDagua(){
+        JLabel nome = new JLabel(jBaseAtivos.getSelectedItem()); 
+        nome.setSize(150,50);
+        nome.setFont(new Font("Serif", Font.BOLD, 24));
+        nome.setForeground(Color.GRAY);
+        nome.setLayout(null);
+	add(nome);
+ 
+        // No Canto inferior esquerdo:
+        nome.setBounds(495, 435, 150, 50);
+        jPanel2.add(nome);
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -192,6 +212,7 @@ public class JAcoes extends javax.swing.JFrame {
         jPanel3.add(jBaseAtivos);
         jBaseAtivos.setVisible(true);
         jBaseAtivos.setDiretorio(jConfiguracoes.getDiretorio());
+        
         try {
             jBaseAtivos.setMaximum(true);
         } catch (PropertyVetoException ex) {
@@ -208,6 +229,8 @@ public class JAcoes extends javax.swing.JFrame {
         for (Component cp : jPanel2.getComponents() ){
             jPanel2.remove(cp);
         }
+        
+        adicionaMarcaDagua();
         
         try{
             Grafico g = new Grafico();
