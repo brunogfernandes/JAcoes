@@ -19,31 +19,20 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.ui.RectangleAnchor;
 
 /**
  *
- * @author bruno
+ * @author bruno e carlos
  */
 public class JAcoes extends javax.swing.JFrame {
     
     public JAcoes() {
         initComponents();
         this.setSize(800, 600);
-    }
-    
-    public void adicionaMarcaDagua(){
-        JLabel nome = new JLabel(jBaseAtivos.getSelectedItem()); 
-        nome.setSize(150,50);
-        nome.setFont(new Font("Serif", Font.BOLD, 24));
-        nome.setForeground(Color.GRAY);
-        nome.setLayout(null);
-	add(nome);
- 
-        // No Canto inferior esquerdo:
-        nome.setBounds(495, 435, 150, 50);
-        jPanel2.add(nome);
-        
-    }
+    }      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -230,13 +219,11 @@ public class JAcoes extends javax.swing.JFrame {
             jPanel2.remove(cp);
         }
         
-        adicionaMarcaDagua();
-        
         try{
             Grafico g = new Grafico();
             ChartPanel chart = g.plotarGrafico(jBaseAtivos.getSelectedItem(), jConfiguracoes.getDiretorio()+"/"+jBaseAtivos.getSelectedItem()+".csv");
             jPanel2.setLayout(new java.awt.BorderLayout());
-            jPanel2.add(chart);
+            jPanel2.add(chart); 
             jPanel2.validate();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(JAcoes.class.getName()).log(Level.SEVERE, null, ex);

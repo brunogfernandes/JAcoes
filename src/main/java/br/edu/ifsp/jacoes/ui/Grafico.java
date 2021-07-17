@@ -11,11 +11,18 @@ import org.jfree.data.xy.OHLCDataItem;
 import br.edu.ifsp.jacoes.data.LeitorCSV;
 import br.edu.ifsp.jacoes.core.Acao;
 import br.edu.ifsp.jacoes.core.Candle;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Paint;
 import java.io.FileNotFoundException;
 import java.time.ZoneId;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.ui.LengthAdjustmentType;
+import org.jfree.chart.ui.RectangleAnchor;
 import org.jfree.data.time.MovingAverage;
 import org.jfree.data.xy.XYDataset;
 
@@ -42,8 +49,14 @@ public class Grafico {
         XYPlot plot = (XYPlot) chart.getPlot();
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
         DateAxis domain = (DateAxis) plot.getDomainAxis();
-        range.setRange(22.50, 29.00);
-        domain.setRange(Date.valueOf("2021-04-10"), Date.valueOf("2021-07-10"));
+        range.setRange(leitor.getMenor(), (leitor.getMaior() + leitor.getMaior() * 0.5));
+        domain.setRange(dados[0].getDate(), dados[dados.length-1].getDate());
+        
+        final Marker marca = new ValueMarker(leitor.getMaior() + leitor.getMaior() * 0.25); 
+        marca.setLabel(ticker);
+        marca.setLabelAnchor(RectangleAnchor.CENTER);
+        marca.setLabelFont(new Font("Serif", Font.BOLD, 24));
+        plot.addRangeMarker(marca);
         
         XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "teste", 1209600000, 0);
         plot.setDataset(1, dataset2);
