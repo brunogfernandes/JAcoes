@@ -1,6 +1,6 @@
 package br.edu.ifsp.jacoes.ui;
 
-import java.sql.Date;
+import java.util.Date;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -11,6 +11,7 @@ import org.jfree.data.xy.OHLCDataItem;
 import br.edu.ifsp.jacoes.data.LeitorCSV;
 import br.edu.ifsp.jacoes.core.Acao;
 import br.edu.ifsp.jacoes.core.Candle;
+import br.edu.ifsp.jacoes.tools.Matematica;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
@@ -20,51 +21,78 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.renderer.xy.CandlestickRenderer;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.chart.ui.LengthAdjustmentType;
 import org.jfree.chart.ui.RectangleAnchor;
+import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.time.MovingAverage;
 import org.jfree.data.xy.XYDataset;
 
 public class Grafico {
     public ChartPanel plotarGrafico(String ticker, String caminhoArquivo) throws FileNotFoundException{
+        // inicializa leitor
         LeitorCSV leitor = new LeitorCSV(caminhoArquivo);
         
+        Matematica matematica = new Matematica();
+        
+        // inicializa acao com ticker passado pela jacoes
         Acao acao = new Acao(ticker);
         acao.setListaCandles(leitor.gerarListaCandles());  
         
+        // incializa array de itens OHLC
         OHLCDataItem [] dados = new OHLCDataItem[acao.getListaCandles().size()];
         
+        // preenche array de itens OHLC
         for(int i = 0; i < acao.getListaCandles().size(); i++){
             Candle candle = acao.getListaCandles().get(i);
-            dados[i] = new OHLCDataItem(Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant()), candle.getAbertura(), candle.getMaxima(), candle.getMinima(), candle.getFechamento(), 0.0);
+            if(candle.getAbertura() == 0.0){
+                Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                dados[i] = new OHLCDataItem(data, (double) dados[i-1].getOpen(), (double) dados[i-1].getHigh(), (double) dados[i-1].getLow(), (double) dados[i-1].getClose(), 0.0);
+            }else{
+                Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                dados[i] = new OHLCDataItem(data, candle.getAbertura(), candle.getMaxima(), candle.getMinima(), candle.getFechamento(), 0.0);
+            }
         }
         
+        // inicializa dataset OHLC
         DefaultOHLCDataset dataset;
         dataset = new DefaultOHLCDataset(dados[0], dados);
 
+        // constroi grafico candlestick usando o dataset inicializado acima
         JFreeChart chart = ChartFactory.createCandlestickChart(
-                acao.getTicker(), "Dias", "Preço", dataset, false);
+                acao.getTicker(), "Data", "Valor das Ações", dataset, false);
 
+        // retorna plot do grafico candlestick
         XYPlot plot = (XYPlot) chart.getPlot();
+        
+        // deixa o candle grossao 
+        CandlestickRenderer renderer = (CandlestickRenderer) plot.getRenderer();
+        renderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_SMALLEST);
+
+        // retorna variaveis de range dos eixos
         NumberAxis range = (NumberAxis) plot.getRangeAxis();
         DateAxis domain = (DateAxis) plot.getDomainAxis();
-        range.setRange(leitor.getMenor(), (leitor.getMaior() + leitor.getMaior() * 0.5));
-        domain.setRange(dados[0].getDate(), dados[dados.length-1].getDate());
         
-        final Marker marca = new ValueMarker(leitor.getMaior() + leitor.getMaior() * 0.25); 
+        // seta o range dos eixos
+        range.setRange(matematica.calculaValorMin(dados, 14), matematica.calculaValorMax(dados, 14));
+        domain.setRange(matematica.calculaDataMin(dados, 14), matematica.calculaDataMax(dados, 14));
+        
+        final Marker marca = new ValueMarker((matematica.calculaValorMax(dados, 14) + matematica.calculaValorMin(dados, 14))/2); 
         marca.setLabel(ticker);
         marca.setLabelAnchor(RectangleAnchor.CENTER);
-        marca.setLabelFont(new Font("Serif", Font.BOLD, 24));
+        marca.setLabelTextAnchor(TextAnchor.CENTER);
+        marca.setLabelFont(new Font("Arial", Font.BOLD, 24));
+        marca.setAlpha(0.1f);
         plot.addRangeMarker(marca);
         
-        XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "teste", 1209600000, 0);
+        XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "teste", 86400000*14, 0);
         plot.setDataset(1, dataset2);
         plot.setRenderer(1, new StandardXYItemRenderer());
         
-        ChartPanel cp = new ChartPanel(chart);
-        cp.setMouseWheelEnabled(true);
+        ChartPanel painelGrafico = new ChartPanel(chart);
+        painelGrafico.setMouseWheelEnabled(true);
         
-        return cp;
+        return painelGrafico;
     }
 }

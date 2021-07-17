@@ -21,7 +21,7 @@ public class Acao {
     }
     
     public List<Candle> getListaCandles(){
-        return this.listaCandles; // verificar se é uma boa prática
+        return this.listaCandles;
     }
     
     public void adicionarCandle(Candle candle){

@@ -7,7 +7,6 @@ package br.edu.ifsp.jacoes.ui;
 
 import java.io.File;
 import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
 
 public class BaseAtivos extends javax.swing.JInternalFrame {
 
@@ -67,6 +66,10 @@ public class BaseAtivos extends javax.swing.JInternalFrame {
     
     public String getSelectedItem(){
         return itemSelecionado;
+    }
+    
+    public void setSelectedItem(String itemSelecionado){
+        this.itemSelecionado = itemSelecionado;
     }
     
     public void setDiretorio(String diretorio) {

@@ -129,10 +129,10 @@ public class Configuracoes extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         // Nome
         fileChooser.setDialogTitle("Procurar diretório");
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         //Seleciona apenas arquivos com extensão csv
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos", "csv");      
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos csv", "csv");      
         fileChooser.setFileFilter(filter);
 
         int retorno = fileChooser.showOpenDialog(this);

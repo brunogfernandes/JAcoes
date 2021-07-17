@@ -31,7 +31,7 @@ public class JAcoes extends javax.swing.JFrame {
     
     public JAcoes() {
         initComponents();
-        this.setSize(800, 600);
+        setLocationRelativeTo(null);
     }      
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,6 +44,12 @@ public class JAcoes extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jmInicio = new javax.swing.JMenu();
@@ -60,23 +66,90 @@ public class JAcoes extends javax.swing.JFrame {
         jmAjuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("JAcoes");
 
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jPanel4.setFocusable(false);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Ainda não sabe como utilizar o sistema? ");
+
+        jButton1.setText("Adicionar Diretório de Ativos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Bem-Vindo ao JAcoes!");
+
+        jButton2.setText("Como começar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Obtenha ajuda abaixo ou na opção \"Ajuda\" do menu superior!");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 637, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(93, 93, 93)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 586, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(194, 194, 194)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(246, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -106,7 +179,7 @@ public class JAcoes extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -141,6 +214,7 @@ public class JAcoes extends javax.swing.JFrame {
         jmFerramentas.setText("Ferramentas");
 
         jmiPlotarGrafico.setText("Plotar Gráfico");
+        jmiPlotarGrafico.setEnabled(false);
         jmiPlotarGrafico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmiPlotarGraficoActionPerformed(evt);
@@ -149,6 +223,7 @@ public class JAcoes extends javax.swing.JFrame {
         jmFerramentas.add(jmiPlotarGrafico);
 
         jmiBaseAtivos.setText("Base de Ativos");
+        jmiBaseAtivos.setEnabled(false);
         jmiBaseAtivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jmiBaseAtivosActionPerformed(evt);
@@ -157,9 +232,11 @@ public class JAcoes extends javax.swing.JFrame {
         jmFerramentas.add(jmiBaseAtivos);
 
         jmiCalcularMMA.setText("Calcular MMA");
+        jmiCalcularMMA.setEnabled(false);
         jmFerramentas.add(jmiCalcularMMA);
 
         jmiPeriodo.setText("Sel. Período");
+        jmiPeriodo.setEnabled(false);
         jmFerramentas.add(jmiPeriodo);
 
         jMenuBar1.add(jmFerramentas);
@@ -197,11 +274,16 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jmiBaseAtivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiBaseAtivosActionPerformed
         // TODO add your handling code here:
-        jBaseAtivos = new BaseAtivos();
-        jPanel3.add(jBaseAtivos);
+        jPanel4.setVisible(false);
+        if(jBaseAtivos == null){
+            jPanel3.add(jBaseAtivos);
+        }else{
+            jPanel3.remove(jBaseAtivos);
+            jPanel3.add(jBaseAtivos);
+        }
         jBaseAtivos.setVisible(true);
         jBaseAtivos.setDiretorio(jConfiguracoes.getDiretorio());
-        
+        jBaseAtivos.setSelectedItem(null);
         try {
             jBaseAtivos.setMaximum(true);
         } catch (PropertyVetoException ex) {
@@ -215,18 +297,24 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jmiPlotarGraficoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiPlotarGraficoActionPerformed
         // TODO add your handling code here:
-        for (Component cp : jPanel2.getComponents() ){
-            jPanel2.remove(cp);
-        }
-        
-        try{
+        jPanel2.removeAll();
+        if(jBaseAtivos.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(rootPane, "Primeiro escolha uma ação!");
+        }else{
             Grafico g = new Grafico();
-            ChartPanel chart = g.plotarGrafico(jBaseAtivos.getSelectedItem(), jConfiguracoes.getDiretorio()+"/"+jBaseAtivos.getSelectedItem()+".csv");
-            jPanel2.setLayout(new java.awt.BorderLayout());
-            jPanel2.add(chart); 
-            jPanel2.validate();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(JAcoes.class.getName()).log(Level.SEVERE, null, ex);
+            ChartPanel chart;
+            try {
+                chart = g.plotarGrafico(jBaseAtivos.getSelectedItem(), jConfiguracoes.getDiretorio()+"/"+jBaseAtivos.getSelectedItem()+".csv");
+                jPanel2.setLayout(new java.awt.BorderLayout());
+                jPanel2.add(chart); 
+                jPanel2.validate();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(JAcoes.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        }
+        if(!jmiPeriodo.isEnabled() || !jmiCalcularMMA.isEnabled()){
+            jmiPeriodo.setEnabled(true);
+            jmiCalcularMMA.setEnabled(true);
         }
     }//GEN-LAST:event_jmiPlotarGraficoActionPerformed
 
@@ -240,9 +328,19 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jmiAbrirConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbrirConfigActionPerformed
         // TODO add your handling code here:
-        jConfiguracoes = new Configuracoes();
         jConfiguracoes.setVisible(true);
+        jConfiguracoes.setLocationRelativeTo(this);
+        jmiBaseAtivos.setEnabled(true);
+        jmiPlotarGrafico.setEnabled(true);
     }//GEN-LAST:event_jmiAbrirConfigActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -279,14 +377,20 @@ public class JAcoes extends javax.swing.JFrame {
         });
     }
     
-    BaseAtivos jBaseAtivos;
-    Configuracoes jConfiguracoes;
+    BaseAtivos jBaseAtivos = new BaseAtivos();
+    Configuracoes jConfiguracoes = new Configuracoes();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JMenu jmAjuda;
     private javax.swing.JMenu jmConfig;
     private javax.swing.JMenu jmFerramentas;

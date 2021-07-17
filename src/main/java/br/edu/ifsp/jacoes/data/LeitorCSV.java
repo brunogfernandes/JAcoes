@@ -12,8 +12,6 @@ import java.util.Scanner;
 public class LeitorCSV{
     private String caminhoArquivo;
     private File arquivo;
-    private Double menor = 5.0;
-    private Double maior = 7.0;
     
     public LeitorCSV(String caminhoArquivo){
         this.setArquivo(caminhoArquivo);
@@ -29,16 +27,7 @@ public class LeitorCSV{
     
     public String getCaminhoArquivo(){
         return caminhoArquivo;
-    }
-
-    public Double getMenor() {
-        return menor;
-    }
-
-    public Double getMaior() {
-        return maior;
-    }
-    
+    } 
     
     public File getArquivo(){
         return arquivo;
@@ -71,19 +60,12 @@ public class LeitorCSV{
             minima = Double.parseDouble(dados[3]);
             fechamento = Double.parseDouble(dados[4]);
             volume = Double.parseDouble(dados[6]);
-            
-            if (abertura < menor ){
-                menor = abertura;
-            } else if (fechamento > maior){
-                maior = fechamento;
-            }
-            
             return new Candle(abertura, maxima, minima, fechamento, volume, Intervalo.DIARIO, data);
         }catch(NumberFormatException ex){
             System.err.println("Seu arquivo CSV contem linhas nulas!");
             System.err.println(ex);
         } 
-        return new Candle();
+        return new Candle(data);
     }
     
     public List<Candle> gerarListaCandles() throws FileNotFoundException{

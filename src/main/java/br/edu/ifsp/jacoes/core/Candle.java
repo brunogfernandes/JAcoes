@@ -15,6 +15,10 @@ public class Candle {
         this(0.0, 0.0, 0.0, 0.0, 0.0, Intervalo.DIARIO, LocalDate.now());
     }
     
+    public Candle(LocalDate data){
+        this(0.0, 0.0, 0.0, 0.0, 0.0, Intervalo.DIARIO, data);
+    }
+    
     public Candle(double abertura, double maxima, double minima, double fechamento, double volume, Intervalo intervalo, LocalDate data){
         this.abertura = abertura;
         this.maxima = maxima;
