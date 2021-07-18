@@ -12,9 +12,7 @@ import br.edu.ifsp.jacoes.data.LeitorCSV;
 import br.edu.ifsp.jacoes.core.Acao;
 import br.edu.ifsp.jacoes.core.Candle;
 import br.edu.ifsp.jacoes.tools.Matematica;
-import java.awt.Color;
 import java.awt.Font;
-import java.awt.Paint;
 import java.io.FileNotFoundException;
 import java.time.ZoneId;
 import org.jfree.chart.ChartPanel;
@@ -23,14 +21,13 @@ import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.xy.CandlestickRenderer;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.chart.ui.LengthAdjustmentType;
 import org.jfree.chart.ui.RectangleAnchor;
 import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.time.MovingAverage;
 import org.jfree.data.xy.XYDataset;
 
 public class Grafico {
-    public ChartPanel plotarGrafico(String ticker, String caminhoArquivo) throws FileNotFoundException{
+    public ChartPanel plotarGrafico(String ticker, String caminhoArquivo, int intExibicao, int intMMA) throws FileNotFoundException{
         // inicializa leitor
         LeitorCSV leitor = new LeitorCSV(caminhoArquivo);
         
@@ -61,7 +58,7 @@ public class Grafico {
 
         // constroi grafico candlestick usando o dataset inicializado acima
         JFreeChart chart = ChartFactory.createCandlestickChart(
-                acao.getTicker(), "Data", "Valor das Ações", dataset, false);
+                acao.getTicker(), "Data", "Valor das Ações (R$)", dataset, false);
 
         // retorna plot do grafico candlestick
         XYPlot plot = (XYPlot) chart.getPlot();
@@ -75,10 +72,10 @@ public class Grafico {
         DateAxis domain = (DateAxis) plot.getDomainAxis();
         
         // seta o range dos eixos
-        range.setRange(matematica.calculaValorMin(dados, 14), matematica.calculaValorMax(dados, 14));
-        domain.setRange(matematica.calculaDataMin(dados, 14), matematica.calculaDataMax(dados, 14));
+        range.setRange(matematica.calculaValorMin(dados, intExibicao), matematica.calculaValorMax(dados, intExibicao));
+        domain.setRange(matematica.calculaDataMin(dados, intExibicao), matematica.calculaDataMax(dados, intExibicao));
         
-        final Marker marca = new ValueMarker((matematica.calculaValorMax(dados, 14) + matematica.calculaValorMin(dados, 14))/2); 
+        final Marker marca = new ValueMarker((matematica.calculaValorMax(dados, intExibicao) + matematica.calculaValorMin(dados, intExibicao))/2); 
         marca.setLabel(ticker);
         marca.setLabelAnchor(RectangleAnchor.CENTER);
         marca.setLabelTextAnchor(TextAnchor.CENTER);
@@ -86,7 +83,7 @@ public class Grafico {
         marca.setAlpha(0.1f);
         plot.addRangeMarker(marca);
         
-        XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "teste", 86400000*14, 0);
+        XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "teste", 86400000*intMMA, 0);
         plot.setDataset(1, dataset2);
         plot.setRenderer(1, new StandardXYItemRenderer());
         

@@ -38,11 +38,6 @@ public class BaseAtivos extends javax.swing.JInternalFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jlBaseAtivos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlBaseAtivosMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(jlBaseAtivos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -58,11 +53,6 @@ public class BaseAtivos extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jlBaseAtivosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlBaseAtivosMouseClicked
-        // TODO add your handling code here:
-        itemSelecionado = jlBaseAtivos.getSelectedValue();
-    }//GEN-LAST:event_jlBaseAtivosMouseClicked
     
     public String getSelectedItem(){
         return itemSelecionado;
@@ -70,6 +60,10 @@ public class BaseAtivos extends javax.swing.JInternalFrame {
     
     public void setSelectedItem(String itemSelecionado){
         this.itemSelecionado = itemSelecionado;
+    }
+    
+    public javax.swing.JList<String> getListaAtivos(){
+        return this.jlBaseAtivos;
     }
     
     public void setDiretorio(String diretorio) {

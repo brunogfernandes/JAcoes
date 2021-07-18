@@ -36,7 +36,8 @@ public class Configuracoes extends javax.swing.JFrame {
         jbAbrir = new javax.swing.JButton();
         jbCancelarDiretorio = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Escolha o diretório de seus arquivos .csv");
 
@@ -93,7 +94,7 @@ public class Configuracoes extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -117,6 +118,7 @@ public class Configuracoes extends javax.swing.JFrame {
 
     private void jbCancelarDiretorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarDiretorioActionPerformed
         jtfDiretorio.setText(dirAnterior);
+        this.setVisible(false);
     }//GEN-LAST:event_jbCancelarDiretorioActionPerformed
 
     private void jbSalvarDiretorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarDiretorioActionPerformed
@@ -182,6 +184,10 @@ public class Configuracoes extends javax.swing.JFrame {
     
     public String getDiretorio(){
         return jtfDiretorio.getText();
+    }
+    
+    public javax.swing.JButton getJbSalvar(){
+        return this.jbSalvarDiretorio;
     }
     
     private File file;
