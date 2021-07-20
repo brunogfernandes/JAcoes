@@ -7,7 +7,6 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.DefaultOHLCDataset;
 import org.jfree.data.xy.OHLCDataItem;
-
 import br.edu.ifsp.jacoes.data.LeitorCSV;
 import br.edu.ifsp.jacoes.core.Acao;
 import br.edu.ifsp.jacoes.core.Candle;
@@ -27,9 +26,9 @@ import org.jfree.data.time.MovingAverage;
 import org.jfree.data.xy.XYDataset;
 
 public class Grafico {
-    public ChartPanel plotarGrafico(String ticker, String caminhoArquivo, int intExibicao, int intMMA) throws FileNotFoundException{
+    public ChartPanel plotarGrafico(String ticker, String caminhoArquivo, int intExibicao, int intMMA, int intCandle) throws FileNotFoundException{
         // inicializa leitor
-        LeitorCSV leitor = new LeitorCSV(caminhoArquivo);
+        LeitorCSV leitor = new LeitorCSV(caminhoArquivo, intCandle);
         
         Matematica matematica = new Matematica();
         
@@ -38,17 +37,47 @@ public class Grafico {
         acao.setListaCandles(leitor.gerarListaCandles());  
         
         // incializa array de itens OHLC
-        OHLCDataItem [] dados = new OHLCDataItem[acao.getListaCandles().size()];
+        OHLCDataItem [] dados;
         
-        // preenche array de itens OHLC
-        for(int i = 0; i < acao.getListaCandles().size(); i++){
-            Candle candle = acao.getListaCandles().get(i);
-            if(candle.getAbertura() == 0.0){
-                Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                dados[i] = new OHLCDataItem(data, (double) dados[i-1].getOpen(), (double) dados[i-1].getHigh(), (double) dados[i-1].getLow(), (double) dados[i-1].getClose(), 0.0);
-            }else{
-                Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
-                dados[i] = new OHLCDataItem(data, candle.getAbertura(), candle.getMaxima(), candle.getMinima(), candle.getFechamento(), 0.0);
+        if(intCandle == 0){
+            dados = new OHLCDataItem[acao.getListaCandles().size()];
+            for(int i = 0; i < acao.getListaCandles().size(); i++){
+                Candle candle = acao.getListaCandles().get(i);
+                if(candle.getAbertura() == 0.0){
+                    Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    dados[i] = new OHLCDataItem(data, (double) dados[i-1].getOpen(), (double) dados[i-1].getHigh(), (double) dados[i-1].getLow(), (double) dados[i-1].getClose(), 0.0);
+                }else{
+                    Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    dados[i] = new OHLCDataItem(data, candle.getAbertura(), candle.getMaxima(), candle.getMinima(), candle.getFechamento(), 0.0);
+                }
+            }
+        }else{
+            int tamArraySem = 0;
+            for(int i = 0, j = 0; i < acao.getListaCandles().size(); i+=5, j++) tamArraySem = j;
+            
+            dados = new OHLCDataItem[tamArraySem];
+            
+            for(int i = 0, j = 0; i < acao.getListaCandles().size(); i+=5, j++){
+                if(i+5 < acao.getListaCandles().size()){
+                    if(acao.getListaCandles().get(i).getMaxima() == 0) break;
+                    
+                    double maxHigh = acao.getListaCandles().get(i).getMaxima();
+                    double minLow = acao.getListaCandles().get(i).getMinima();
+                    
+                    Candle candle = acao.getListaCandles().get(i);
+                    
+                    for(int k = i; k < i+5; k++){
+                        if(maxHigh < acao.getListaCandles().get(i).getMaxima())
+                            maxHigh = acao.getListaCandles().get(i).getMaxima();
+                        
+                        if(minLow > acao.getListaCandles().get(i).getMinima())
+                            minLow = acao.getListaCandles().get(i).getMinima();
+                    }
+                    
+                    Date data = Date.from(candle.getData().atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    double fec = acao.getListaCandles().get(i+5).getFechamento();
+                    dados[j] = new OHLCDataItem(data, candle.getAbertura(), maxHigh, minLow, fec, 0.0);
+                }
             }
         }
         
@@ -79,7 +108,7 @@ public class Grafico {
         marca.setLabel(ticker);
         marca.setLabelAnchor(RectangleAnchor.CENTER);
         marca.setLabelTextAnchor(TextAnchor.CENTER);
-        marca.setLabelFont(new Font("Arial", Font.BOLD, 24));
+        marca.setLabelFont(new Font("Arial", Font.BOLD, 36));
         marca.setAlpha(0.1f);
         plot.addRangeMarker(marca);
         

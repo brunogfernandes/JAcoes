@@ -73,11 +73,11 @@ public class JAcoes extends javax.swing.JFrame {
         painelConfigGrafico = new javax.swing.JPanel();
         jtfAtivoAtual = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jlbExibicao = new javax.swing.JLabel();
         jtfExibicao = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jcbIntCandles = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        jlbIntMMA = new javax.swing.JLabel();
         jtfIntMMA = new javax.swing.JTextField();
         jbPlotarGrafico = new javax.swing.JButton();
         jbReset = new javax.swing.JButton();
@@ -141,7 +141,7 @@ public class JAcoes extends javax.swing.JFrame {
 
         jLabel1.setText("Ação");
 
-        jLabel2.setText("Int. Exibição (dias)");
+        jlbExibicao.setText("Int. Exibição (dias)");
 
         jtfExibicao.setText("00");
         jtfExibicao.setEnabled(false);
@@ -150,8 +150,17 @@ public class JAcoes extends javax.swing.JFrame {
 
         jcbIntCandles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diario", "Semanal" }));
         jcbIntCandles.setEnabled(false);
+        jcbIntCandles.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                jcbIntCandlesPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
 
-        jLabel4.setText("Int. MMA (dias)");
+        jlbIntMMA.setText("Int. MMA (dias)");
 
         jtfIntMMA.setText("00");
         jtfIntMMA.setEnabled(false);
@@ -182,7 +191,7 @@ public class JAcoes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtfAtivoAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(jlbExibicao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtfExibicao, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -190,7 +199,7 @@ public class JAcoes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jcbIntCandles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(jlbIntMMA)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtfIntMMA, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -206,11 +215,11 @@ public class JAcoes extends javax.swing.JFrame {
                 .addGroup(painelConfigGraficoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfAtivoAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
+                    .addComponent(jlbExibicao)
                     .addComponent(jtfExibicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jcbIntCandles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
+                    .addComponent(jlbIntMMA)
                     .addComponent(jtfIntMMA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbPlotarGrafico)
                     .addComponent(jbReset))
@@ -307,21 +316,50 @@ public class JAcoes extends javax.swing.JFrame {
         Grafico g = new Grafico();
         ChartPanel chart;
         
-        int intervaloExibicao = Integer.parseInt(jtfExibicao.getText());
-        int intervaloMMA = Integer.parseInt(jtfIntMMA.getText());
+        for(int i = 0; i < jBaseAtivos.getListaAtivos().getModel().getSize(); i++){
+            if(jtfAtivoAtual.getText().equals(jBaseAtivos.getListaAtivos().getModel().getElementAt(i))){
+                jBaseAtivos.getListaAtivos().setSelectedIndex(i);
+                break;
+            }
+        }
+        
+        int intervaloExibicao;
+        int intervaloMMA;
+        
+        try{
+            intervaloExibicao = Integer.parseInt(jtfExibicao.getText());
+            intervaloMMA = Integer.parseInt(jtfIntMMA.getText());
+        }catch(NumberFormatException e){
+            intervaloExibicao = (int) Double.parseDouble(jtfExibicao.getText());
+            intervaloMMA = (int) Double.parseDouble(jtfIntMMA.getText());
+            jtfExibicao.setText(String.valueOf((int) Double.parseDouble(jtfExibicao.getText())));
+            jtfIntMMA.setText(String.valueOf((int) Double.parseDouble(jtfIntMMA.getText())));
+        }
+        
+        if(jcbIntCandles.getSelectedIndex() == 1){
+            intervaloMMA*=7;
+        }
         
         if(intervaloMMA > 24 || intervaloMMA < 1){
-            JOptionPane.showMessageDialog(rootPane, "Insira um valor superior a 0 e inferior a 25 dias!", "Erro!", JOptionPane.WARNING_MESSAGE);
+            if(jcbIntCandles.getSelectedIndex() == 1){
+                JOptionPane.showMessageDialog(rootPane, "Insira um valor entre 1 e 3 semanas", "Erro!", JOptionPane.WARNING_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Insira um valor entre 1 e 24 dias", "Erro!", JOptionPane.WARNING_MESSAGE);
+            }  
         }
         else if(intervaloExibicao > 240 || intervaloExibicao < 1){
-            JOptionPane.showMessageDialog(rootPane, "Insira um valor superior a 0 e inferior a 240 dias!", "Erro!", JOptionPane.WARNING_MESSAGE);
+            if(jcbIntCandles.getSelectedIndex() == 1){
+                JOptionPane.showMessageDialog(rootPane, "Insira um valor entre 1 e 34 semanas");
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Insira um valor entre 1 e 240 dias!", "Erro!", JOptionPane.WARNING_MESSAGE);
+            }  
         }
         else if(!verificaInputAtivo(jtfAtivoAtual.getText())){
             JOptionPane.showMessageDialog(rootPane, "O Ativo Digitado não está na Base de Ativos!", "Erro!", JOptionPane.WARNING_MESSAGE);
         }
         else{
             try {
-            chart = g.plotarGrafico(jtfAtivoAtual.getText(), jConfiguracoes.getDiretorio()+"/"+jtfAtivoAtual.getText()+".csv", intervaloExibicao, intervaloMMA);
+            chart = g.plotarGrafico(jtfAtivoAtual.getText(), jConfiguracoes.getDiretorio()+"/"+jtfAtivoAtual.getText()+".csv", intervaloExibicao, intervaloMMA, jcbIntCandles.getSelectedIndex());
             painelGrafico.setLayout(new java.awt.BorderLayout());
             painelGrafico.add(chart); 
             painelGrafico.validate();
@@ -344,14 +382,35 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jbResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbResetActionPerformed
         // TODO add your handling code here:
-        jtfExibicao.setText("14");
-        jtfIntMMA.setText("14");
+        if(jcbIntCandles.getSelectedIndex() == 0){
+            jtfExibicao.setText("14");
+            jtfIntMMA.setText("14");
+        }else{
+            jtfExibicao.setText("7");
+            jtfIntMMA.setText("2");
+        }        
     }//GEN-LAST:event_jbResetActionPerformed
 
     private void jmiSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSairActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jmiSairActionPerformed
+
+    private void jcbIntCandlesPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_jcbIntCandlesPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        if(jcbIntCandles.getSelectedIndex() == 0){
+            jlbExibicao.setText("Int. Exibição (dias)");
+            jlbIntMMA.setText("Int. MMA (dias)");
+            jtfExibicao.setText("14");
+            jtfIntMMA.setText("14");
+        }
+        else{
+            jlbExibicao.setText("Int. Exibição (sem.)");
+            jlbIntMMA.setText("Int. MMA (sem.)");
+            jtfExibicao.setText("7");
+            jtfIntMMA.setText("2");
+        }
+    }//GEN-LAST:event_jcbIntCandlesPopupMenuWillBecomeInvisible
 
     /**
      * @param args the command line arguments
@@ -402,13 +461,13 @@ public class JAcoes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton jbPlotarGrafico;
     private javax.swing.JButton jbReset;
     private javax.swing.JComboBox<String> jcbIntCandles;
+    private javax.swing.JLabel jlbExibicao;
+    private javax.swing.JLabel jlbIntMMA;
     private javax.swing.JMenu jmAjuda;
     private javax.swing.JMenu jmFerramentas;
     private javax.swing.JMenuItem jmiAbrirConfig;
