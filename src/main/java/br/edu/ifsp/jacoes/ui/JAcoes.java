@@ -67,6 +67,7 @@ public class JAcoes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         painelPrincipal = new javax.swing.JPanel();
         painelGrafico = new javax.swing.JPanel();
         painelBaseAtivos = new javax.swing.JPanel();
@@ -86,11 +87,13 @@ public class JAcoes extends javax.swing.JFrame {
         jmiAbrirConfig = new javax.swing.JMenuItem();
         jmiSair = new javax.swing.JMenuItem();
         jmAjuda = new javax.swing.JMenu();
+        jMenuAjudaPerformed = new javax.swing.JMenuItem();
         jmiSobre = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JAcoes");
-        setPreferredSize(new java.awt.Dimension(1024, 768));
         setResizable(false);
 
         painelPrincipal.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -274,6 +277,14 @@ public class JAcoes extends javax.swing.JFrame {
 
         jmAjuda.setText("Ajuda");
 
+        jMenuAjudaPerformed.setText("Tutorial");
+        jMenuAjudaPerformed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAjudaPerformedActionPerformed(evt);
+            }
+        });
+        jmAjuda.add(jMenuAjudaPerformed);
+
         jmiSobre.setText("Sobre");
         jmiSobre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -302,6 +313,8 @@ public class JAcoes extends javax.swing.JFrame {
 
     private void jmiSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSobreActionPerformed
         // TODO add your handling code here:
+        jSobre.setLocationRelativeTo(this);
+        jSobre.setVisible(true);
     }//GEN-LAST:event_jmiSobreActionPerformed
 
     private void jmiAbrirConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAbrirConfigActionPerformed
@@ -412,6 +425,12 @@ public class JAcoes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jcbIntCandlesPopupMenuWillBecomeInvisible
 
+    private void jMenuAjudaPerformedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAjudaPerformedActionPerformed
+        // TODO add your handling code here:
+        jTutorial.setLocationRelativeTo(this);
+        jTutorial.setVisible(true);
+    }//GEN-LAST:event_jMenuAjudaPerformedActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -458,11 +477,15 @@ public class JAcoes extends javax.swing.JFrame {
     
     BaseAtivos jBaseAtivos = new BaseAtivos();
     Configuracoes jConfiguracoes = new Configuracoes();
+    Tutorial jTutorial = new Tutorial();
+    Sobre jSobre = new Sobre();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenuItem jMenuAjudaPerformed;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton jbPlotarGrafico;
     private javax.swing.JButton jbReset;
     private javax.swing.JComboBox<String> jcbIntCandles;
